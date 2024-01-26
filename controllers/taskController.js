@@ -189,6 +189,8 @@ const updateTaskStatus = async (req, res) => {
     const classId = req.params.classId;
     const taskId = req.params.taskId;
     const userId = req.user._id; // Assuming you have the user ID in req.user
+    const username = req.user.username; 
+    console.log('username',username);
 
     const project = await Project.findById(projectId);
 
@@ -214,6 +216,7 @@ const updateTaskStatus = async (req, res) => {
     if (!isUserAssignedToTask) {
       return res.status(403).json({ message: 'Unauthorized: You are not assigned to this task' });
     }
+    
 
     // Now, you can proceed with updating the task status
     const { status } = req.body;
@@ -230,8 +233,8 @@ const updateTaskStatus = async (req, res) => {
 
     if (status == 'completed') {
       // Generate notification for task completion
-      const notificationMessage = `Task "${foundTask.title}" has been completed.`;
-      const notification = new Notification({ userId, message: notificationMessage });
+      const notificationMessage = `Task: ${foundTask.title} has been completed by ${username}`;
+      const notification = new Notification({ userId, message: notificationMessage, taskId: foundTask._id, isRead: true });
       await notification.save();
     
       res.status(200).json({ message: 'Task status updated to completed', task: foundTask });

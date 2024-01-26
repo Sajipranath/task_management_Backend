@@ -6,9 +6,11 @@ const dotenv = require('dotenv');
 const authRoutes = require('./routes/authRoutes');
 const projectRoutes = require('./routes/projectRoutes');
 const taskRoutes = require('./routes/taskRoutes');
-const classRoutes=require("./routes/classRoutes")
+const classRoutes=require("./routes/classRoutes");
+const notificationRoutes = require("./routes/notifcationRoutes")
 const connection =require("./db");
 const {scheduleTaskNotifications}=require('./notification');
+
 
 dotenv.config();
 
@@ -32,6 +34,7 @@ app.use('/auth', authRoutes);
 app.use('/projects', projectRoutes);
 app.use('/class',classRoutes);
 app.use('/tasks', taskRoutes);
+app.use('/notification',notificationRoutes);
 
 
 
@@ -57,3 +60,5 @@ connection().then(() => {
     console.error("Error connecting to the database:", err);
   });
   
+ 
+
